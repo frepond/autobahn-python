@@ -100,25 +100,29 @@ def _create_transport_serializers(transport):
     """
     serializers = []
     for serializer_id in transport.serializers:
-        if serializer_id == u'msgpack':
+        if serializer_id in [u'msgpack', u'msgpack.batched']:
             # try MsgPack WAMP serializer
             try:
                 from autobahn.wamp.serializer import MsgPackSerializer
             except ImportError:
                 pass
             else:
-                serializers.append(MsgPackSerializer(batched=True))
-                serializers.append(MsgPackSerializer())
+                if serializer_id == u'msgpack.batched':
+                    serializers.append(MsgPackSerializer(batched=True))
+                else:
+                    serializers.append(MsgPackSerializer())
 
-        elif serializer_id == u'json':
+        elif serializer_id in [u'json', u'json.batched']:
             # try JSON WAMP serializer
             try:
                 from autobahn.wamp.serializer import JsonSerializer
             except ImportError:
                 pass
             else:
-                serializers.append(JsonSerializer(batched=True))
-                serializers.append(JsonSerializer())
+                if serializer_id == u'json.batched':
+                    serializers.append(JsonSerializer(batched=True))
+                else:
+                    serializers.append(JsonSerializer())
 
         else:
             raise RuntimeError(

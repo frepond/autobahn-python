@@ -173,7 +173,7 @@ def _create_transport(index, transport, check_native_endpoint=None):
                     isinstance(s, (six.text_type, str))
                     for s in transport['serializers']]):
                 raise ValueError("'serializers' must be a list of strings")
-            valid_serializers = ('msgpack', 'json')
+            valid_serializers = ('msgpack', 'json', 'msgpack.batched', 'json.batched')
             for serial in transport['serializers']:
                 if serial not in valid_serializers:
                     raise ValueError(
